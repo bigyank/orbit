@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import GradientLink from '../components/common/GradientLink';
 import GradientBar from './../components/common/GradientBar';
 import logo from './../images/logo.png';
+import {AuthContext} from "../context/AuthContext";
+
+
 
 const Home = () => {
+  const authState = useContext(AuthContext)
+  console.log(authState.isAuthenticated())
   return (
     <>
       <GradientBar />
@@ -17,12 +22,12 @@ const Home = () => {
           />
           <div className="flex items-center">
             <Link
-              to="/signup"
+              to={authState.isAuthenticated()?"/dashboard":"/signup"}
               className="text-blue-700 mr-6"
             >
               Sign Up
             </Link>
-            <GradientLink to={'/login'} text="Log In" />
+            <GradientLink to={authState.isAuthenticated()?"/dashboard":"/login"} text="Log In" />
           </div>
         </div>
       </div>
@@ -46,7 +51,7 @@ const Home = () => {
               <GradientLink
                 text="Get Started"
                 size="lg"
-                to={'/dashboard'}
+                to={authState.isAuthenticated() ? "/dashboard" : "/signup"}
               />
             </div>
           </div>

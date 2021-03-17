@@ -9,7 +9,13 @@ const dashboardData = require("./data/dashboard");
 const User = require("./data/User");
 const InventoryItem = require("./data/InventoryItem");
 
-const { createToken, hashPassword, verifyPassword } = require("./util");
+const {
+  createToken,
+  hashPassword,
+  verifyPassword,
+  requireAdmin,
+  checkJWT,
+} = require("./util");
 
 const app = express();
 
@@ -116,7 +122,10 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-app.get("/api/dashboard-data", (req, res) => res.json(dashboardData));
+app.get("/api/dashboard-data", checkJWT, requireAdmin, (req, res) => {
+  console.log(req.user);
+  res.json(dashboardData);
+});
 
 app.patch("/api/user-role", async (req, res) => {
   try {
